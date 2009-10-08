@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_height="wrap_content" android:layout_width="fill_parent"
+	android:orientation="vertical">
+	<LinearLayout android:id="@+id/LinearLayout01"
+		android:layout_height="wrap_content" android:orientation="horizontal"
+		android:layout_width="fill_parent">
+		<TextView android:layout_height="wrap_content"
+			android:layout_width="wrap_content" android:layout_weight="1"
+			android:id="@+id/TextViewOutgoing" android:text="Outgoing bytes"
+			android:textSize="24px"></TextView>
+		<TextView android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:text="0"
+			android:id="@+id/TextViewOutgoingValue" android:textSize="24px"></TextView>
+	</LinearLayout>
+	<ProgressBar android:layout_height="wrap_content"
+		android:id="@+id/ProgressBarOutgoing" android:max="100"
+		android:progress="0" android:layout_width="fill_parent"></ProgressBar>
+	<ImageView android:id="@+id/ImageView01"
+		android:layout_width="fill_parent" android:layout_height="10px"></ImageView>
+	<LinearLayout android:id="@+id/LinearLayout01"
+		android:layout_height="wrap_content" android:orientation="horizontal"
+		android:layout_width="fill_parent">
+		<TextView android:layout_height="wrap_content"
+			android:layout_width="wrap_content" android:layout_weight="1"
+			android:id="@+id/TextViewIncoming" android:text="Incoming bytes"
+			android:textSize="24px"></TextView>
+		<TextView android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:text="0"
+			android:id="@+id/TextViewIncomingValue" android:textSize="24px"></TextView>
+	</LinearLayout>
+	<ProgressBar android:layout_height="wrap_content"
+		android:max="100" android:progress="0" android:id="@+id/ProgressBarIncoming"
+		android:layout_width="fill_parent"></ProgressBar>
+</LinearLayout>
