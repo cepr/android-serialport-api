@@ -41,7 +41,7 @@ public class MainMenu extends Activity {
 			public void onClick(View v) {
 				AlertDialog.Builder builder = new AlertDialog.Builder(MainMenu.this);
 				builder.setTitle("About");
-				builder.setMessage("TODO: About message");
+				builder.setMessage(R.string.about_msg);
 				builder.show();
 			}
 		});
@@ -49,7 +49,7 @@ public class MainMenu extends Activity {
         final Button buttonQuit = (Button)findViewById(R.id.ButtonQuit);
         buttonQuit.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				Runtime.getRuntime().exit(0);
+				MainMenu.this.finish();
 			}
 		});
     }

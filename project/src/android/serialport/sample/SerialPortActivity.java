@@ -3,12 +3,11 @@ package android.serialport.sample;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
+import java.security.InvalidParameterException;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.serialport.SerialPort;
@@ -43,30 +42,36 @@ public abstract class SerialPortActivity extends Activity {
 		}
 	}
 
+	private void DisplayError(int resourceId) {
+		AlertDialog.Builder b = new AlertDialog.Builder(this);
+		b.setTitle("Error");
+		b.setMessage(resourceId);
+		b.setPositiveButton("OK", new OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				SerialPortActivity.this.finish();
+			}
+		});
+		b.show();
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mApplication = (Application) getApplication();
-		mSerialPort = mApplication.getSerialPort();
-		if (mSerialPort == null)
-		{
-			AlertDialog.Builder b = new AlertDialog.Builder(this);
-			b.setTitle("Error");
-			b.setMessage("Please configure your serial port.");
-			b.setPositiveButton("OK", new OnClickListener() {
-				public void onClick(DialogInterface dialog, int which) {
-					startActivity(new Intent(SerialPortActivity.this, SerialPortPreferences.class));
-					SerialPortActivity.this.finish();
-				}
-			});
-			b.show();
-		} else {
+		try {
+			mSerialPort = mApplication.getSerialPort();
 			mOutputStream = mSerialPort.getOutputStream();
 			mInputStream = mSerialPort.getInputStream();
-			
+
 			/* Create a receiving thread */
 			mReadThread = new ReadThread();
 			mReadThread.start();
+		} catch (SecurityException e) {
+			DisplayError(R.string.error_security);
+		} catch (IOException e) {
+			DisplayError(R.string.error_unknown);
+		} catch (InvalidParameterException e) {
+			DisplayError(R.string.error_configuration);
 		}
 	}
 

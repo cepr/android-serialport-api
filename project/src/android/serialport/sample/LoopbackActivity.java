@@ -23,7 +23,11 @@ public class LoopbackActivity extends SerialPortActivity {
 			}
 			while(!isInterrupted()) {
 				try {
-					mOutputStream.write(buffer);
+					if (mOutputStream != null) {
+						mOutputStream.write(buffer);
+					} else {
+						return;
+					}
 				} catch (IOException e) {
 					e.printStackTrace();
 					return;
@@ -44,8 +48,10 @@ public class LoopbackActivity extends SerialPortActivity {
 		setContentView(R.layout.loopback);
 		mTextViewOutgoing = (TextView) findViewById(R.id.TextViewOutgoingValue);
 		mTextViewIncoming = (TextView) findViewById(R.id.TextViewIncomingValue);
-		mSendingThread = new SendingThread();
-		mSendingThread.start();
+		if (mSerialPort != null) {
+			mSendingThread = new SendingThread();
+			mSendingThread.start();
+		}
 	}
 
 	@Override
@@ -60,7 +66,7 @@ public class LoopbackActivity extends SerialPortActivity {
 
 	@Override
 	protected void onDestroy() {
-		mSendingThread.interrupt();
+		if (mSendingThread != null) mSendingThread.interrupt();
 		super.onDestroy();
 	}
 }
