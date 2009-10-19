@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+<string-array name="baudrates_name"><item>4800</item>
+<item>9600</item>
+<item>115200</item>
+</string-array>
+
+<string-array name="baudrates_value"><item>4800</item>
+<item>9600</item>
+<item>115200</item>
+</string-array>
+</resources>
