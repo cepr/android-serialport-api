@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+	android:title="sercd settings">
+	<PreferenceCategory
+		android:title="@string/general">
+		<CheckBoxPreference
+			android:key="enabled"
+			android:title="@string/activate"
+			android:persistent="true"/>
+	</PreferenceCategory>
+	<PreferenceCategory
+		android:title="@string/hardware">
+		<ListPreference
+			android:key="serialport"
+			android:title="@string/serialport"
+			android:persistent="true"/>
+	</PreferenceCategory>
+	<PreferenceCategory
+		android:title="@string/network">
+		<ListPreference
+			android:key="netinterface"
+			android:title="@string/netinterface"
+			android:persistent="true"/>
+		<EditTextPreference
+			android:key="portnumber"
+			android:title="@string/portnumber"
+			android:persistent="true"/>
+	</PreferenceCategory>
+	<PreferenceCategory
+		android:title="@string/about">
+		<Preference
+			android:key="aboutsercd"
+			android:title="@string/aboutsercd"/>
+		<Preference
+			android:key="aboutserialportapi"
+			android:title="@string/aboutserialportapi"/>
+	</PreferenceCategory>
+</PreferenceScreen>

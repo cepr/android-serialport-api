@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Serial Port Proxy</string>
+    <string name="aboutsercd">About sercd</string>
+    <string name="aboutserialportapi">About android-serialport-api</string>
+    <string name="about">About</string>
+    <string name="hardware">Hardware</string>
+    <string name="general">General</string>
+    <string name="network">Network</string>
+    <string name="netinterface">Interface</string>
+    <string name="portnumber">Port</string>
+    <string name="serialport">tty device</string>
+    <string name="activate">Enabled</string>
+    <string name="notif_ready">Waiting for a remote connection</string>
+    <string name="notif_connected">Remote idle</string>    
+    <string name="notif_opened">Remote connected to serial port</string>
+    <string name="notif_crash">Failed, check your parameters</string>
+    <string name="su_failed">Failed changing device permissions</string>
+</resources>
