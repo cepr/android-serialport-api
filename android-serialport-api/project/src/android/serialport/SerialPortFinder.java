@@ -65,10 +65,13 @@ public class SerialPortFinder {
 			LineNumberReader r = new LineNumberReader(new FileReader("/proc/tty/drivers"));
 			String l;
 			while((l = r.readLine()) != null) {
+				// Issue 3:
+				// Since driver name may contain spaces, we do not extract driver name with split()
+				String drivername = l.substring(0, 0x15).trim();
 				String[] w = l.split(" +");
-				if ((w.length == 5) && (w[4].equals("serial"))) {
-					Log.d(TAG, "Found new driver: " + w[1]);
-					mDrivers.add(new Driver(w[0], w[1]));
+				if ((w.length >= 5) && (w[w.length-1].equals("serial"))) {
+					Log.d(TAG, "Found new driver " + drivername + " on " + w[w.length-4]);
+					mDrivers.add(new Driver(drivername, w[w.length-4]));
 				}
 			}
 			r.close();
