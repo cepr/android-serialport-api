@@ -14,14 +14,14 @@
  * limitations under the License. 
  */
 
-package android.serialport.sample;
+package android_serialport_api.sample;
 
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
-import android.preference.PreferenceActivity;
 import android.preference.Preference.OnPreferenceChangeListener;
-import android.serialport.SerialPortFinder;
+import android.preference.PreferenceActivity;
+import android_serialport_api.SerialPortFinder;
 
 public class SerialPortPreferences extends PreferenceActivity {
 

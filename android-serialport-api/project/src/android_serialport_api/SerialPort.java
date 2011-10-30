@@ -14,7 +14,7 @@
  * limitations under the License. 
  */
 
-package android.serialport;
+package android_serialport_api;
 
 import java.io.File;
 import java.io.FileDescriptor;
@@ -37,7 +37,7 @@ public class SerialPort {
 	private FileInputStream mFileInputStream;
 	private FileOutputStream mFileOutputStream;
 
-	public SerialPort(File device, int baudrate) throws SecurityException, IOException {
+	public SerialPort(File device, int baudrate, int flags) throws SecurityException, IOException {
 
 		/* Check access permission */
 		if (!device.canRead() || !device.canWrite()) {
@@ -58,7 +58,7 @@ public class SerialPort {
 			}
 		}
 
-		mFd = open(device.getAbsolutePath(), baudrate);
+		mFd = open(device.getAbsolutePath(), baudrate, flags);
 		if (mFd == null) {
 			Log.e(TAG, "native open returns null");
 			throw new IOException();
@@ -77,7 +77,7 @@ public class SerialPort {
 	}
 
 	// JNI
-	private native static FileDescriptor open(String path, int baudrate);
+	private native static FileDescriptor open(String path, int baudrate, int flags);
 	public native void close();
 	static {
 		System.loadLibrary("serial_port");

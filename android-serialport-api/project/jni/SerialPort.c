@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Cedric Priscal
+ * Copyright 2009-2011 Cedric Priscal
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,8 @@
 #include <fcntl.h>
 #include <string.h>
 #include <jni.h>
+
+#include "SerialPort.h"
 
 #include "android/log.h"
 static const char *TAG="serial_port";
@@ -67,12 +69,12 @@ static speed_t getBaudrate(jint baudrate)
 }
 
 /*
- * Class:     cedric_serial_SerialPort
+ * Class:     android_serialport_SerialPort
  * Method:    open
- * Signature: (Ljava/lang/String;)V
+ * Signature: (Ljava/lang/String;II)Ljava/io/FileDescriptor;
  */
-JNIEXPORT jobject JNICALL Java_android_serialport_SerialPort_open
-  (JNIEnv *env, jobject thiz, jstring path, jint baudrate)
+JNIEXPORT jobject JNICALL Java_android_1serialport_1api_SerialPort_open
+  (JNIEnv *env, jclass thiz, jstring path, jint baudrate, jint flags)
 {
 	int fd;
 	speed_t speed;
@@ -92,8 +94,8 @@ JNIEXPORT jobject JNICALL Java_android_serialport_SerialPort_open
 	{
 		jboolean iscopy;
 		const char *path_utf = (*env)->GetStringUTFChars(env, path, &iscopy);
-		LOGD("Opening serial port %s", path_utf);
-		fd = open(path_utf, O_RDWR | O_DIRECT | O_SYNC);
+		LOGD("Opening serial port %s with flags 0x%x", path_utf, O_RDWR | flags);
+		fd = open(path_utf, O_RDWR | flags);
 		LOGD("open() fd = %d", fd);
 		(*env)->ReleaseStringUTFChars(env, path, path_utf);
 		if (fd == -1)
@@ -147,7 +149,7 @@ JNIEXPORT jobject JNICALL Java_android_serialport_SerialPort_open
  * Method:    close
  * Signature: ()V
  */
-JNIEXPORT void JNICALL Java_android_serialport_SerialPort_close
+JNIEXPORT void JNICALL Java_android_1serialport_1api_SerialPort_close
   (JNIEnv *env, jobject thiz)
 {
 	jclass SerialPortClass = (*env)->GetObjectClass(env, thiz);
@@ -162,3 +164,4 @@ JNIEXPORT void JNICALL Java_android_serialport_SerialPort_close
 	LOGD("close(fd = %d)", descriptor);
 	close(descriptor);
 }
+
