@@ -23,47 +23,71 @@ import android.widget.TextView;
 
 public class LoopbackActivity extends SerialPortActivity {
 
-	int mIncoming;
-	int mOutgoing;
+	byte mValueToSend;
+	boolean mByteReceivedBack;
+	Object mByteReceivedBackSemaphore = new Object();
+	Integer mIncoming = new Integer(0);
+	Integer mOutgoing = new Integer(0);
+	Integer mLost = new Integer(0);
+	Integer mCorrupted = new Integer(0);
+
 	SendingThread mSendingThread;
 	TextView mTextViewOutgoing;
 	TextView mTextViewIncoming;
+	TextView mTextViewLost;
+	TextView mTextViewCorrupted;
 
 	private class SendingThread extends Thread {
 		@Override
 		public void run() {
-			byte[] buffer = new byte[1024];
-			int i;
-			for (i=0; i<buffer.length; i++) {
-				buffer[i] = 0x55;
-			}
-			while(!isInterrupted()) {
-				try {
-					if (mOutputStream != null) {
-						mOutputStream.write(buffer);
-					} else {
+			while (!isInterrupted()) {
+				synchronized (mByteReceivedBackSemaphore) {
+					mByteReceivedBack = false;
+					try {
+						if (mOutputStream != null) {
+							mOutputStream.write(mValueToSend);
+						} else {
+							return;
+						}
+					} catch (IOException e) {
+						e.printStackTrace();
 						return;
 					}
-				} catch (IOException e) {
-					e.printStackTrace();
-					return;
-				}
-				mOutgoing += buffer.length;
-				runOnUiThread(new Runnable() {
-					public void run() {
-						mTextViewOutgoing.setText(new Integer(mOutgoing).toString());
+					mOutgoing++;
+					// Wait for 100ms before sending next byte, or as soon as
+					// the sent byte has been read back.
+					try {
+						mByteReceivedBackSemaphore.wait(100);
+						if (mByteReceivedBack == true) {
+							// Byte has been received
+							mIncoming++;
+						} else {
+							// Timeout
+							mLost++;
+						}
+						runOnUiThread(new Runnable() {
+							public void run() {
+								mTextViewOutgoing.setText(mOutgoing.toString());
+								mTextViewLost.setText(mLost.toString());
+								mTextViewIncoming.setText(mIncoming.toString());
+								mTextViewCorrupted.setText(mCorrupted.toString());
+							}
+						});
+					} catch (InterruptedException e) {
 					}
-				});
+				}
 			}
 		}
 	}
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.loopback);
 		mTextViewOutgoing = (TextView) findViewById(R.id.TextViewOutgoingValue);
 		mTextViewIncoming = (TextView) findViewById(R.id.TextViewIncomingValue);
+		mTextViewLost = (TextView) findViewById(R.id.textViewLostValue);
+		mTextViewCorrupted = (TextView) findViewById(R.id.textViewCorruptedValue);
 		if (mSerialPort != null) {
 			mSendingThread = new SendingThread();
 			mSendingThread.start();
@@ -72,17 +96,27 @@ public class LoopbackActivity extends SerialPortActivity {
 
 	@Override
 	protected void onDataReceived(byte[] buffer, int size) {
-		mIncoming += size;
-		runOnUiThread(new Runnable() {
-			public void run() {
-				mTextViewIncoming.setText(new Integer(mIncoming).toString());
+
+		synchronized (mByteReceivedBackSemaphore) {
+			int i;
+			for (i = 0; i < size; i++) {
+				if ((buffer[i] == mValueToSend) && (mByteReceivedBack == false)) {
+					// This byte was expected
+					// Wake-up the sending thread
+					mByteReceivedBack = true;
+					mByteReceivedBackSemaphore.notify();
+				} else {
+					// The byte was not expected
+					mCorrupted++;
+				}
 			}
-		});
+		}
 	}
 
 	@Override
 	protected void onDestroy() {
-		if (mSendingThread != null) mSendingThread.interrupt();
+		if (mSendingThread != null)
+			mSendingThread.interrupt();
 		super.onDestroy();
 	}
 }
