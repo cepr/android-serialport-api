@@ -1,41 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:id="@+id/RelativeLayout01"
-	android:layout_width="fill_parent"
-	android:layout_height="fill_parent"
-	android:gravity="center"
-	xmlns:android="http://schemas.android.com/apk/res/android">
-	<Button
-		android:id="@+id/ButtonSetup"
-		android:text="Setup"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-	/>
-	<Button
-		android:id="@+id/ButtonConsole"
-		android:text="Console"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:layout_below="@+id/ButtonSetup" 
-	/>
-	<Button
-		android:id="@+id/ButtonLoopback"
-		android:text="Loopback"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:layout_below="@+id/ButtonConsole"
-	/>
-	<Button
-		android:id="@+id/ButtonAbout"
-		android:text="About"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:layout_below="@+id/ButtonLoopback"
-	/>
-	<Button
-		android:id="@+id/ButtonQuit"
-		android:text="Quit"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:layout_below="@+id/ButtonAbout"
-	/>
-</RelativeLayout>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/linearLayout1"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentTop="true"
+    android:orientation="vertical" >
+
+    <Button
+        android:id="@+id/ButtonSetup"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="Setup" />
+
+    <Button
+        android:id="@+id/ButtonConsole"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="Console" />
+
+    <Button
+        android:id="@+id/ButtonLoopback"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="Loopback" />
+
+    <Button
+        android:id="@+id/Button01010101"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="Send 01010101" />
+
+    <Button
+        android:id="@+id/ButtonAbout"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="About" />
+
+    <Button
+        android:id="@+id/ButtonQuit"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="Quit" />
+
+</LinearLayout>

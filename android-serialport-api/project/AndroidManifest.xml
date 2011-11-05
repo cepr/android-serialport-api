@@ -23,6 +23,7 @@
         </activity>
         <activity android:name="LoopbackActivity" >
         </activity>
+        <activity android:name="Sending01010101Activity"></activity>
     </application>
 
     <uses-sdk android:minSdkVersion="3" />
