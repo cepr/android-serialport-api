@@ -101,6 +101,7 @@ public class LoopbackActivity extends SerialPortActivity {
 			int i;
 			for (i = 0; i < size; i++) {
 				if ((buffer[i] == mValueToSend) && (mByteReceivedBack == false)) {
+					mValueToSend++;
 					// This byte was expected
 					// Wake-up the sending thread
 					mByteReceivedBack = true;
